@@ -50,6 +50,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 	-- get the last character to know if there's already the needed
 	-- character or not
 	local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
+	local line_for_equals = vim.api.nvim_buf_get_lines(0, line_num, line_num, false)[1]
 
 	-- make sure that no character is added after the semicolon
 	if line:sub(-1) == ";" then
@@ -72,11 +73,10 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 	-- And since after inserting the `=` the user is still on the same line
 	-- there is a strange behaviour like multiple '=' are inserted.
 	if character == "=" then
-		line = vim.api.nvim_buf_get_lines(0, line_num, line_num, false)[1]
 		-- if line already contains '=', don't add another one
 		-- also check if the last character isn't a space character
 		-- then don't add anything.
-		if line:find("=") or line:sub(-1) ~= " " then
+		if line_for_equals:find("=") or line_for_equals:sub(-1) ~= " " then
 			return
 		end
 
@@ -84,7 +84,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 
 		-- Update the line by inserting the character at the new cursor position
 		-- local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
-		local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
+		local updated_line = line_for_equals:sub(1, end_column) .. character .. line_for_equals:sub(end_column + 1)
 		-- vim.api.nvim_buf_set_lines(0, line_num, line_num + 1, false, { updated_line })
 
 		vim.api.nvim_buf_set_text(0, line_num, 0, line_num, end_column, { updated_line })
