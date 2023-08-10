@@ -72,6 +72,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 	-- And since after inserting the `=` the user is still on the same line
 	-- there is a strange behaviour like multiple '=' are inserted.
 	if character == "=" then
+		line = vim.api.nvim_buf_get_lines(0, line_num, line_num, false)[1]
 		-- if line already contains '=', don't add another one
 		-- also check if the last character isn't a space character
 		-- then don't add anything.
@@ -83,14 +84,12 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 
 		-- Update the line by inserting the character at the new cursor position
 		-- local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
-		-- local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
-		local updated_line = line:sub(1, end_column) .. character
+		local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
 		-- vim.api.nvim_buf_set_lines(0, line_num, line_num + 1, false, { updated_line })
-		-- vim.api.nvim_buf_set_lines(0, line_num, line_num, false, { updated_line })
 
 		vim.api.nvim_buf_set_text(0, line_num, 0, line_num, end_column, { updated_line })
 		-- Move the cursor back to the original position
-		-- vim.api.nvim_win_set_cursor(0, { line_num + 1, end_column + 2 })
+		vim.api.nvim_win_set_cursor(0, { line_num + 1, end_column + 2 })
 	end
 
 	-- in this part, we're looking at the certain index where the
