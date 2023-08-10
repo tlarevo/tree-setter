@@ -50,7 +50,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 	-- get the last character to know if there's already the needed
 	-- character or not
 	local line = vim.api.nvim_buf_get_lines(0, line_num, line_num + 1, false)[1]
-	local line_for_equals = vim.api.nvim_buf_get_lines(0, line_num, line_num, false)[1]
+	local line_for_equals = vim.api.nvim_buf_get_lines(0, line_num, line_num, false)[0]
 
 	-- make sure that no character is added after the semicolon
 	if line:sub(-1) == ";" then
