@@ -82,7 +82,7 @@ function Setter.set_character(bufnr, line_num, end_column, character)
 		character = character .. " " -- this will add a space after the equals e.g. '= '
 
 		-- Update the line by inserting the character at the new cursor position
-		local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column + 1)
+		local updated_line = line:sub(1, end_column) .. character .. line:sub(end_column)
 		-- vim.api.nvim_buf_set_lines(0, line_num, line_num + 1, false, { updated_line })
 		-- vim.api.nvim_buf_set_lines(0, line_num, line_num, false, { updated_line })
 
